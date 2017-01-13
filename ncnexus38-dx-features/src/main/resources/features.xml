@@ -1,0 +1,16 @@
+<features name="mapseq-pipeline-ncnexus-dx-${project.version}" xmlns="http://karaf.apache.org/xmlns/features/v1.2.0">
+
+  <feature name="mapseq-pipeline-ncnexus-dx" version="${project.version}" resolver="(obr)">
+    <bundle>mvn:edu.unc.mapseq.pipelines.ncnexus-dx/ncnexus-dx-commons/${project.version}</bundle>
+    <bundle>mvn:edu.unc.mapseq.pipelines.ncnexus-dx/ncnexus-dx-workflow/${project.version}</bundle>
+    <bundle>mvn:edu.unc.mapseq.pipelines.ncnexus-dx/ncnexus-dx-commands/${project.version}</bundle>
+    <bundle start-level="100">mvn:edu.unc.mapseq.pipelines.ncnexus-dx/ncnexus-dx-executor/${project.version}</bundle>
+    <bundle start-level="100">mvn:edu.unc.mapseq.pipelines.ncnexus-dx/ncnexus-dx-messaging/${project.version}</bundle>
+  </feature>
+
+</features>
+
+
+
+
+

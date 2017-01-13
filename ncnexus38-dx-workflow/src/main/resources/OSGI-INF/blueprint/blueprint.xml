@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" default-activation="eager">
+
+  <cm:property-placeholder persistent-id="edu.unc.mapseq.workflow.ncnexus38.dx" update-strategy="reload">
+    <cm:default-properties>
+      <cm:property name="corePoolSize" value="100" />
+      <cm:property name="maxPoolSize" value="100" />
+      <cm:property name="siteName" value="Hatteras" />
+      <cm:property name="subjectMergeHome" value="/projects/sequence_analysis/medgenwork/prod/NCNEXUS38/subject-merge" />
+      <cm:property name="referenceSequence" value="$NCNEXUS_REFERENCES_DIRECTORY/BUILD.38/BUILD.38.p7.plusM.sorted.shortid.Ymasked.fa" />
+    </cm:default-properties>
+  </cm:property-placeholder>
+
+  <reference id="maPSeqConfigurationService" interface="edu.unc.mapseq.config.MaPSeqConfigurationService" />
+  <reference id="maPSeqDAOBeanService" interface="edu.unc.mapseq.dao.MaPSeqDAOBeanService" />
+
+  <bean id="NCNEXUS38DXWorkflowBeanService" class="edu.unc.mapseq.workflow.core.WorkflowBeanServiceImpl">
+    <property name="corePoolSize" value="${corePoolSize}" />
+    <property name="maxPoolSize" value="${maxPoolSize}" />
+    <property name="maPSeqConfigurationService" ref="maPSeqConfigurationService" />
+    <property name="maPSeqDAOBeanService" ref="maPSeqDAOBeanService" />
+    <property name="attributes">
+      <map>
+        <entry key="subjectMergeHome" value="${subjectMergeHome}" />
+        <entry key="referenceSequence" value="${referenceSequence}" />
+        <entry key="siteName" value="${siteName}" />
+      </map>
+    </property>
+    <cm:managed-properties persistent-id="edu.unc.mapseq.workflow.ncnexus38.dx" update-strategy="container-managed" />
+  </bean>
+
+  <service ref="NCNEXUS38DXWorkflowBeanService" interface="edu.unc.mapseq.workflow.WorkflowBeanService" />
+
+</blueprint>

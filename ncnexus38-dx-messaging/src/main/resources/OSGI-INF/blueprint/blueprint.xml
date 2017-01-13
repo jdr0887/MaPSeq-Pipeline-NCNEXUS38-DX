@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.1.0" default-activation="eager">
+
+  <reference id="connectionFactory" interface="javax.jms.ConnectionFactory" />
+
+  <reference id="NCNEXUS38DXWorkflowBeanService" interface="edu.unc.mapseq.workflow.WorkflowBeanService" component-name="NCNEXUS38DXWorkflowBeanService" />
+
+  <bean id="NCNEXUS38DXMessageListener" class="edu.unc.mapseq.messaging.ncnexus.dx.NCNEXUS38DXMessageListener">
+    <property name="workflowBeanService" ref="NCNEXUS38DXWorkflowBeanService" />
+    <property name="workflowName" value="NCNEXUS38DX" />
+  </bean>
+
+  <bean id="NCNEXUS38DXMessageService" class="edu.unc.mapseq.messaging.ncnexus.dx.NCNEXUS38DXMessageService" init-method="start"
+    destroy-method="stop" activation="eager">
+    <property name="connectionFactory" ref="connectionFactory" />
+    <property name="messageListener" ref="NCNEXUS38DXMessageListener" />
+    <property name="destinationName" value="queue/ncnexus38.dx" />
+  </bean>
+
+</blueprint>
