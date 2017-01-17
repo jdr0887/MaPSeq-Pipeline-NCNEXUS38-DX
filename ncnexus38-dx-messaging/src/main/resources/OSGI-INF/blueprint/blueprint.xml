@@ -6,12 +6,12 @@
 
   <reference id="NCNEXUS38DXWorkflowBeanService" interface="edu.unc.mapseq.workflow.WorkflowBeanService" component-name="NCNEXUS38DXWorkflowBeanService" />
 
-  <bean id="NCNEXUS38DXMessageListener" class="edu.unc.mapseq.messaging.ncnexus.dx.NCNEXUS38DXMessageListener">
+  <bean id="NCNEXUS38DXMessageListener" class="edu.unc.mapseq.messaging.ncnexus38.dx.NCNEXUS38DXMessageListener">
     <property name="workflowBeanService" ref="NCNEXUS38DXWorkflowBeanService" />
     <property name="workflowName" value="NCNEXUS38DX" />
   </bean>
 
-  <bean id="NCNEXUS38DXMessageService" class="edu.unc.mapseq.messaging.ncnexus.dx.NCNEXUS38DXMessageService" init-method="start"
+  <bean id="NCNEXUS38DXMessageService" class="edu.unc.mapseq.messaging.ncnexus38.dx.NCNEXUS38DXMessageService" init-method="start"
     destroy-method="stop" activation="eager">
     <property name="connectionFactory" ref="connectionFactory" />
     <property name="messageListener" ref="NCNEXUS38DXMessageListener" />
