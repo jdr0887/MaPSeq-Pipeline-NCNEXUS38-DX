@@ -6,7 +6,7 @@
   </parent>
   <name>MaPSeq :: Pipelines :: NCNEXUS38 DX :: Commands</name>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>edu.unc.mapseq.pipelines.ncnexus-dx</groupId>
+  <groupId>edu.unc.mapseq.pipelines.ncnexus38-dx</groupId>
   <artifactId>ncnexus38-dx-commands</artifactId>
   <version>0.6.3-SNAPSHOT</version>
   <packaging>bundle</packaging>
