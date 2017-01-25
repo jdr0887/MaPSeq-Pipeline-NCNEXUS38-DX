@@ -122,8 +122,8 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             dataDirectory = "/projects/mapseq/data";
         }
 
-        File versionedExonsIntervalListFile = new File(
-                String.format("%1$s/resources/annotation/abeast/NCNEXUS38/%2$s/exons_pm_0_v%2$s.interval_list", dataDirectory, listVersion));
+        File versionedExonsIntervalListFile = new File(String
+                .format("%1$s/resources/annotation/abeast/NCNEXUS38/%2$s/exons_pm_0_v%2$s.interval_list", dataDirectory, listVersion));
         if (!versionedExonsIntervalListFile.exists()) {
             throw new WorkflowException("Interval list file does not exist: " + versionedExonsIntervalListFile.getAbsolutePath());
         }
@@ -133,11 +133,12 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             throw new WorkflowException("BED file does not exist: " + versionedExonsBedFile.getAbsolutePath());
         }
 
-        File intervalListByDXAndVersionFile = new File(String
-                .format("%1$s/resources/annotation/abeast/NCNEXUS38/%2$s/genes_dxid_%3$s_v_%2$s.interval_list", dataDirectory, listVersion, dxId));
+        File intervalListByDXAndVersionFile = new File(String.format(
+                "%1$s/resources/annotation/abeast/NCNEXUS38/%2$s/genes_dxid_%3$s_v_%2$s.interval_list", dataDirectory, listVersion, dxId));
         if (isIncidental) {
-            intervalListByDXAndVersionFile = new File(String.format(
-                    "%1$s/resources/annotation/abeast/NCNEXUS38/Incidental/incidental_%3$s_%2$s.interval_list", dataDirectory, listVersion, dxId));
+            intervalListByDXAndVersionFile = new File(
+                    String.format("%1$s/resources/annotation/abeast/NCNEXUS38/Incidental/incidental_%3$s_%2$s.interval_list", dataDirectory,
+                            listVersion, dxId));
         }
         if (!intervalListByDXAndVersionFile.exists()) {
             throw new WorkflowException("Interval list file does not exist: " + intervalListByDXAndVersionFile.getAbsolutePath());
@@ -228,13 +229,15 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             builder = SequencingWorkflowJobFactory.createJob(++count, ZipCLI.class, attempt.getId()).siteName(siteName);
             File zipOutputFile = new File(outputDirectory, picardSortSAMOutput.getName().replace(".bam", ".zip"));
             builder.addArgument(ZipCLI.ENTRY, picardSortSAMOutput.getAbsolutePath())
-                    .addArgument(ZipCLI.ENTRY, picardSortSAMIndexOut.getAbsolutePath()).addArgument(ZipCLI.OUTPUT, zipOutputFile.getAbsolutePath());
+                    .addArgument(ZipCLI.WORKDIR, outputDirectory.getAbsolutePath())
+                    .addArgument(ZipCLI.ENTRY, picardSortSAMIndexOut.getAbsolutePath())
+                    .addArgument(ZipCLI.OUTPUT, zipOutputFile.getAbsolutePath());
             CondorJob zipJob = builder.build();
             logger.info(zipJob.toString());
             graph.addVertex(zipJob);
             graph.addEdge(picardSortSAMJob, zipJob);
 
-            File vcf = new File(bamFile.getParentFile(), bamFile.getName().replace(".bam", ".sorted.va.vcf"));
+            File vcf = new File(bamFile.getParentFile(), bamFile.getName().replace(".bam", ".filtered.sorted.va.vcf"));
             // new job
             builder = SequencingWorkflowJobFactory.createJob(++count, FilterVariantCLI.class, attempt.getId()).siteName(siteName);
             File filterVariantOutput = new File(outputDirectory,
