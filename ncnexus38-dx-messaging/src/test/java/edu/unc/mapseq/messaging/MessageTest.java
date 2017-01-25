@@ -59,12 +59,12 @@ public class MessageTest {
 
             generator.writeStartObject();
             generator.writeStringField("name", "list_version");
-            generator.writeStringField("value", "7");
+            generator.writeStringField("value", "22");
             generator.writeEndObject();
 
             generator.writeStartObject();
             generator.writeStringField("name", "dx_id");
-            generator.writeStringField("value", "22");
+            generator.writeStringField("value", "7");
             generator.writeEndObject();
 
             generator.writeEndArray();
