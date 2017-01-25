@@ -190,8 +190,8 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             // new job
             CondorJobBuilder builder = SequencingWorkflowJobFactory.createJob(++count, PicardCollectHsMetricsCLI.class, attempt.getId())
                     .siteName(siteName);
-            File picardCollectHsMetricsFile = new File(subjectDirectory, bamFile.getName().replace(".bam", ".hs_metrics.txt"));
-            File picardCollectHsPerTargetsCoverageFile = new File(subjectDirectory, bamFile.getName().replace(".bam", ".hs_coverage.txt"));
+            File picardCollectHsMetricsFile = new File(outputDirectory, bamFile.getName().replace(".bam", ".hs.metrics"));
+            File picardCollectHsPerTargetsCoverageFile = new File(outputDirectory, bamFile.getName().replace(".bam", ".hs.coverage"));
             builder.addArgument(PicardCollectHsMetricsCLI.INPUT, bamFile.getAbsolutePath())
                     .addArgument(PicardCollectHsMetricsCLI.OUTPUT, picardCollectHsMetricsFile.getAbsolutePath())
                     .addArgument(PicardCollectHsMetricsCLI.REFERENCESEQUENCE, referenceSequence)
