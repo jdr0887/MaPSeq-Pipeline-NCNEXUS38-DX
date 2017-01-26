@@ -2,13 +2,13 @@
   <parent>
     <groupId>edu.unc.mapseq.pipelines</groupId>
     <artifactId>ncnexus38-dx</artifactId>
-    <version>0.6.10-SNAPSHOT</version>
+    <version>0.6.10</version>
   </parent>
   <name>MaPSeq :: Pipelines :: NCNEXUS38 DX :: Features</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.unc.mapseq.pipelines.ncnexus38-dx</groupId>
   <artifactId>ncnexus38-dx-features</artifactId>
-  <version>0.6.10-SNAPSHOT</version>
+  <version>0.6.10</version>
   <packaging>pom</packaging>
   <build>
     <plugins>
