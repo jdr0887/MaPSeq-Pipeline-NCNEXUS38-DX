@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -27,6 +28,7 @@ import edu.unc.mapseq.dao.model.Attribute;
 import edu.unc.mapseq.dao.model.Sample;
 import edu.unc.mapseq.dao.model.WorkflowRun;
 import edu.unc.mapseq.dao.model.WorkflowRunAttempt;
+import edu.unc.mapseq.module.core.RemoveCLI;
 import edu.unc.mapseq.module.core.ZipCLI;
 import edu.unc.mapseq.module.sequencing.filter.FilterVariantCLI;
 import edu.unc.mapseq.module.sequencing.picard.PicardSortOrderType;
@@ -34,6 +36,7 @@ import edu.unc.mapseq.module.sequencing.picard2.PicardCollectHsMetricsCLI;
 import edu.unc.mapseq.module.sequencing.picard2.PicardSortSAMCLI;
 import edu.unc.mapseq.module.sequencing.picard2.PicardViewSAMCLI;
 import edu.unc.mapseq.workflow.WorkflowException;
+import edu.unc.mapseq.workflow.core.WorkflowJobFactory;
 import edu.unc.mapseq.workflow.sequencing.AbstractSequencingWorkflow;
 import edu.unc.mapseq.workflow.sequencing.SequencingWorkflowJobFactory;
 import edu.unc.mapseq.workflow.sequencing.SequencingWorkflowUtil;
@@ -91,13 +94,9 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
                 continue;
             }
             Set<Attribute> sampleAttributes = sample.getAttributes();
-            if (sampleAttributes != null && !sampleAttributes.isEmpty()) {
-                for (Attribute attribute : sampleAttributes) {
-                    if (attribute.getName().equals("subjectName")) {
-                        subjectNameSet.add(attribute.getValue());
-                        break;
-                    }
-                }
+            Optional<Attribute> foundAttribute = sampleAttributes.stream().filter(a -> "subjectName".equals(a.getName())).findFirst();
+            if (foundAttribute.isPresent()) {
+                subjectNameSet.add(foundAttribute.get().getValue());
             }
         }
 
@@ -237,7 +236,7 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             graph.addVertex(zipJob);
             graph.addEdge(picardSortSAMJob, zipJob);
 
-            File vcf = new File(bamFile.getParentFile(), bamFile.getName().replace(".bam", ".filtered.sorted.va.vcf"));
+            File vcf = new File(subjectDirectory, bamFile.getName().replace(".bam", ".filtered.sorted.va.vcf"));
             // new job
             builder = SequencingWorkflowJobFactory.createJob(++count, FilterVariantCLI.class, attempt.getId()).siteName(siteName);
             File filterVariantOutput = new File(outputDirectory,
@@ -248,6 +247,14 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             CondorJob filterVariantJob = builder.build();
             logger.info(filterVariantJob.toString());
             graph.addVertex(filterVariantJob);
+
+            // new job
+            builder = WorkflowJobFactory.createJob(++count, RemoveCLI.class, attempt.getId()).siteName(siteName);
+            builder.addArgument(RemoveCLI.FILE, picardViewSAMOutput.getAbsolutePath());
+            CondorJob removeJob = builder.build();
+            logger.info(removeJob.toString());
+            graph.addVertex(removeJob);
+            graph.addEdge(filterVariantJob, removeJob);
 
         } catch (Exception e) {
             throw new WorkflowException(e);
