@@ -10,6 +10,9 @@
   <artifactId>ncnexus38-dx-features</artifactId>
   <version>0.6.12-SNAPSHOT</version>
   <packaging>pom</packaging>
+  <properties>
+    <maven.site.plugin.skip>true</maven.site.plugin.skip>    
+  </properties>            
   <build>
     <plugins>
       <plugin>
