@@ -2,13 +2,13 @@
   <parent>
     <groupId>edu.unc.mapseq.pipelines</groupId>
     <artifactId>ncnexus38-dx</artifactId>
-    <version>0.6.13</version>
+    <version>0.6.14-SNAPSHOT</version>
   </parent>
   <name>MaPSeq :: Pipelines :: NCNEXUS38 DX :: Executor</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.unc.mapseq.pipelines.ncnexus38-dx</groupId>
   <artifactId>ncnexus38-dx-executor</artifactId>
-  <version>0.6.13</version>
+  <version>0.6.14-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <properties>
     <maven.site.plugin.skip>true</maven.site.plugin.skip>    
