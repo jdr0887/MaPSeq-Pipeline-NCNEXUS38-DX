@@ -143,7 +143,7 @@ public class RegisterToIRODSRunnable implements Runnable {
 
             try {
                 Collection<ServiceReference<WorkflowBeanService>> references = bundleContext.getServiceReferences(WorkflowBeanService.class,
-                        "(osgi.service.blueprint.compname=NCNEXUS38VariantCallingWorkflowBeanService)");
+                        "(osgi.service.blueprint.compname=NCNEXUS38MergeVCWorkflowBeanService)");
 
                 if (CollectionUtils.isNotEmpty(references)) {
                     for (ServiceReference<WorkflowBeanService> sr : references) {
