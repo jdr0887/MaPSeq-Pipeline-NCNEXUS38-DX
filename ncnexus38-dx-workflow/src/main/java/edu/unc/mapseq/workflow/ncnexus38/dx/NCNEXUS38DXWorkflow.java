@@ -84,6 +84,7 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
                 }
             }
         }
+        
         if (listVersion == null || dxId == null) {
             throw new WorkflowException("Both version and DX were null...returning empty dag");
         }
@@ -235,8 +236,8 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             logger.info(zipJob.toString());
             graph.addVertex(zipJob);
             graph.addEdge(picardSortSAMJob, zipJob);
-
-            File vcf = new File(subjectDirectory, bamFile.getName().replace(".bam", ".filtered.sorted.va.vcf"));
+            
+            File vcf = new File(subjectDirectory, bamFile.getName().replace(".bam", ".filtered.srd.ps.va.vcf"));
             // new job
             builder = SequencingWorkflowJobFactory.createJob(++count, FilterVariantCLI.class, attempt.getId()).siteName(siteName);
             File filterVariantOutput = new File(outputDirectory,
