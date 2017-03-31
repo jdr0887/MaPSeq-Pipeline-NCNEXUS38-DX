@@ -40,15 +40,27 @@ public class MessageTest {
 
             generator.writeStartObject();
             generator.writeStringField("entityType", "Sample");
-            generator.writeStringField("id", "2622760");
-            // generator.writeStringField("id", "1774501");
+            generator.writeStringField("id", "2625807");
 
             generator.writeArrayFieldStart("attributes");
 
             generator.writeStartObject();
             generator.writeStringField("name", "subjectName");
-            generator.writeStringField("value", "HRC061-1");
-            //generator.writeStringField("value", "NCG_00020");
+            generator.writeStringField("value", "NCX_00004");
+            generator.writeEndObject();
+
+            generator.writeEndArray();
+            generator.writeEndObject();
+
+            generator.writeStartObject();
+            generator.writeStringField("entityType", "Sample");
+            generator.writeStringField("id", "2625711");
+
+            generator.writeArrayFieldStart("attributes");
+
+            generator.writeStartObject();
+            generator.writeStringField("name", "subjectName");
+            generator.writeStringField("value", "NCX_00004");
             generator.writeEndObject();
 
             generator.writeEndArray();
@@ -56,7 +68,7 @@ public class MessageTest {
 
             generator.writeStartObject();
             generator.writeStringField("entityType", "WorkflowRun");
-            generator.writeStringField("name", "HRC061-1-ncnexus38-dx-test-1");
+            generator.writeStringField("name", "NCX_00004-ncnexus38-dx-test-1");
             generator.writeArrayFieldStart("attributes");
 
             generator.writeStartObject();
