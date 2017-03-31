@@ -255,6 +255,7 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             CondorJob removeJob = builder.build();
             logger.info(removeJob.toString());
             graph.addVertex(removeJob);
+            graph.addEdge(zipJob, removeJob);
             graph.addEdge(filterVariantJob, removeJob);
 
         } catch (Exception e) {
