@@ -30,6 +30,7 @@ import edu.unc.mapseq.dao.model.WorkflowRun;
 import edu.unc.mapseq.dao.model.WorkflowRunAttempt;
 import edu.unc.mapseq.module.core.RemoveCLI;
 import edu.unc.mapseq.module.core.ZipCLI;
+import edu.unc.mapseq.module.sequencing.converter.SAMToolsDepthToGATKDOCFormatConverterCLI;
 import edu.unc.mapseq.module.sequencing.filter.FilterVariantCLI;
 import edu.unc.mapseq.module.sequencing.picard.PicardSortOrderType;
 import edu.unc.mapseq.module.sequencing.picard2.PicardCollectHsMetricsCLI;
@@ -84,7 +85,7 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
                 }
             }
         }
-        
+
         if (listVersion == null || dxId == null) {
             throw new WorkflowException("Both version and DX were null...returning empty dag");
         }
@@ -122,11 +123,18 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             dataDirectory = "/projects/mapseq/data";
         }
 
+        File allIntervalsFile = new File(
+                String.format("%1$s/resources/annotation/abeast/NCNEXUS38/all/allintervals.v%2$s.txt", dataDirectory, listVersion));
+        if (!allIntervalsFile.exists()) {
+            throw new WorkflowException("allIntervalsFile does not exist: " + allIntervalsFile.getAbsolutePath());
+        }
+
         File versionedExonsIntervalListFile = new File(String
                 .format("%1$s/resources/annotation/abeast/NCNEXUS38/%2$s/exons_pm_0_v%2$s.interval_list", dataDirectory, listVersion));
         if (!versionedExonsIntervalListFile.exists()) {
             throw new WorkflowException("Interval list file does not exist: " + versionedExonsIntervalListFile.getAbsolutePath());
         }
+
         File versionedExonsBedFile = new File(
                 String.format("%1$s/resources/annotation/abeast/NCNEXUS38/%2$s/exons_pm_0_v%2$s.bed", dataDirectory, listVersion));
         if (!versionedExonsBedFile.exists()) {
@@ -203,6 +211,20 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             graph.addVertex(picardCollectHsMetricsJob);
 
             // new job
+            builder = SequencingWorkflowJobFactory.createJob(++count, SAMToolsDepthToGATKDOCFormatConverterCLI.class, attempt.getId())
+                    .siteName(siteName).numberOfProcessors(8);
+            File samtoolsDepthFile = new File(subjectDirectory, bamFile.getName().replace(".bam", ".depth.txt"));
+            File samtoolsDepthConvertedFile = new File(outputDirectory,
+                    bamFile.getName().replace(".bam", String.format(".depth.v%s.txt", listVersion)));
+            builder.addArgument(SAMToolsDepthToGATKDOCFormatConverterCLI.INPUT, samtoolsDepthFile.getAbsolutePath())
+                    .addArgument(SAMToolsDepthToGATKDOCFormatConverterCLI.OUTPUT, samtoolsDepthConvertedFile.getAbsolutePath())
+                    .addArgument(SAMToolsDepthToGATKDOCFormatConverterCLI.INTERVALS, allIntervalsFile.getAbsolutePath())
+                    .addArgument(SAMToolsDepthToGATKDOCFormatConverterCLI.THREADS, 8);
+            CondorJob samtoolsDepthToGATKDOCFormatConverterJob = builder.build();
+            logger.info(samtoolsDepthToGATKDOCFormatConverterJob.toString());
+            graph.addVertex(samtoolsDepthToGATKDOCFormatConverterJob);
+
+            // new job
             builder = SequencingWorkflowJobFactory.createJob(++count, PicardViewSAMCLI.class, attempt.getId()).siteName(siteName);
             File picardViewSAMOutput = new File(outputDirectory,
                     bamFile.getName().replace(".bam", String.format(".filtered_by_dxid_%s_v%s.bam", dxId, listVersion)));
@@ -236,7 +258,7 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
             logger.info(zipJob.toString());
             graph.addVertex(zipJob);
             graph.addEdge(picardSortSAMJob, zipJob);
-            
+
             File vcf = new File(subjectDirectory, bamFile.getName().replace(".bam", ".filtered.srd.ps.va.vcf"));
             // new job
             builder = SequencingWorkflowJobFactory.createJob(++count, FilterVariantCLI.class, attempt.getId()).siteName(siteName);
