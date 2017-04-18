@@ -2,13 +2,13 @@
   <parent>
     <groupId>edu.unc.mapseq.pipelines</groupId>
     <artifactId>ncnexus38-dx</artifactId>
-    <version>0.6.18</version>
+    <version>0.6.19-SNAPSHOT</version>
   </parent>
   <name>MaPSeq :: Pipelines :: NCNEXUS38 DX :: Messaging</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>edu.unc.mapseq.pipelines.ncnexus38-dx</groupId>
   <artifactId>ncnexus38-dx-messaging</artifactId>
-  <version>0.6.18</version>
+  <version>0.6.19-SNAPSHOT</version>
   <packaging>bundle</packaging>
   <properties>
     <maven.site.plugin.skip>true</maven.site.plugin.skip>    
