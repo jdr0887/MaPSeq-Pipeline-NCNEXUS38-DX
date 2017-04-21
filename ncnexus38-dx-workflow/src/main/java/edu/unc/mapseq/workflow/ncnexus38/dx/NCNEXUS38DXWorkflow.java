@@ -212,7 +212,7 @@ public class NCNEXUS38DXWorkflow extends AbstractSequencingWorkflow {
 
             // new job
             builder = SequencingWorkflowJobFactory.createJob(++count, SAMToolsDepthToGATKDOCFormatConverterCLI.class, attempt.getId())
-                    .siteName(siteName).numberOfProcessors(8);
+                    .siteName(siteName).numberOfProcessors(16);
             File samtoolsDepthFile = new File(subjectDirectory, bamFile.getName().replace(".bam", ".depth.txt"));
             File samtoolsDepthConvertedFile = new File(outputDirectory,
                     bamFile.getName().replace(".bam", String.format(".depth.v%s.txt", listVersion)));
