@@ -38,6 +38,7 @@ import edu.unc.mapseq.dao.model.Workflow;
 import edu.unc.mapseq.dao.model.WorkflowRun;
 import edu.unc.mapseq.dao.model.WorkflowRunAttempt;
 import edu.unc.mapseq.module.core.Zip;
+import edu.unc.mapseq.module.sequencing.converter.SAMToolsDepthToGATKDOCFormatConverter;
 import edu.unc.mapseq.module.sequencing.filter.FilterVariant;
 import edu.unc.mapseq.module.sequencing.picard.PicardSortSAM;
 import edu.unc.mapseq.module.sequencing.picard2.PicardCollectHsMetrics;
@@ -202,6 +203,13 @@ public class RegisterToIRODSRunnable implements Runnable {
             attributeListWithJob.add(new ImmutablePair<String, String>("MaPSeqReferenceSequenceFile", referenceSequence));
             attributeListWithJob.add(new ImmutablePair<String, String>("MaPSeqMimeType", MimeType.TEXT_PLAIN.toString()));
             File file = new File(subjectMergeDirectory, String.format("%s.merged.rg.deduped.hs.coverage", subjectName));
+            files2RegisterToIRODS.add(new IRODSBean(file, attributeListWithJob));
+
+            attributeListWithJob = new ArrayList<>(attributeList);
+            attributeListWithJob
+                    .add(new ImmutablePair<String, String>("MaPSeqJobName", SAMToolsDepthToGATKDOCFormatConverter.class.getSimpleName()));
+            attributeListWithJob.add(new ImmutablePair<String, String>("MaPSeqMimeType", MimeType.TEXT_PLAIN.toString()));
+            file = new File(subjectMergeDirectory, String.format("%s.merged.rg.deduped.depth.v%s.txt", subjectName, listVersion));
             files2RegisterToIRODS.add(new IRODSBean(file, attributeListWithJob));
 
             attributeListWithJob = new ArrayList<>(attributeList);
