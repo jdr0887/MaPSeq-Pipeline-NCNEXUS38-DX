@@ -68,12 +68,12 @@ public class MessageTest {
 
             generator.writeStartObject();
             generator.writeStringField("entityType", "WorkflowRun");
-            generator.writeStringField("name", "NCX_00004-ncnexus38-dx-test-1");
+            generator.writeStringField("name", "NCX_00004-ncnexus38-dx-test-2");
             generator.writeArrayFieldStart("attributes");
 
             generator.writeStartObject();
             generator.writeStringField("name", "list_version");
-            generator.writeStringField("value", "41");
+            generator.writeStringField("value", "43");
             generator.writeEndObject();
 
             generator.writeStartObject();
