@@ -193,7 +193,8 @@ public class RegisterToIRODSRunnable implements Runnable {
             List<IRODSBean> files2RegisterToIRODS = new ArrayList<IRODSBean>();
 
             List<ImmutablePair<String, String>> attributeList = Arrays.asList(
-                    new ImmutablePair<String, String>("ParticipantId", subjectName),
+                    new ImmutablePair<String, String>("ParticipantId", subjectName), new ImmutablePair<String, String>("DxID", dxId),
+                    new ImmutablePair<String, String>("DxVersion", listVersion),
                     new ImmutablePair<String, String>("MaPSeqWorkflowVersion", version),
                     new ImmutablePair<String, String>("MaPSeqWorkflowName", workflow.getName()),
                     new ImmutablePair<String, String>("MaPSeqSystem", workflow.getSystem().getValue()));
